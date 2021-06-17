@@ -43,13 +43,16 @@ beforeEach
 ###
 
 # verify initial state
-token="$("$DOPPLER_BINARY" configure debug --json --configuration=./temp-config | jq -r ".[\"/\"].token")"
-[[ "$token" == "" ]] || error "ERROR: expected blank config value"
+value="$("$DOPPLER_BINARY" configure debug --json --configuration=./temp-config | jq -r ".[\"/\"].token")"
+echo "Value1: '$value'"
+[[ "$value" == "" ]] || error "ERROR: expected blank config value"
 # verify env var is read
-token="$(DOPPLER_TOKEN=123 "$DOPPLER_BINARY" configure debug --json --configuration=./temp-config | jq -r ".[\"/\"].token")"
-[[ "$token" == "123" ]] || error "ERROR: expected token from environment"
+value="$(DOPPLER_TOKEN=123 "$DOPPLER_BINARY" configure debug --json --configuration=./temp-config | jq -r ".[\"/\"].token")"
+echo "Value2: '$value'"
+[[ "$value" == "123" ]] || error "ERROR: expected token from environment"
 # verify env var is ignored
-token="$(DOPPLER_TOKEN=123 "$DOPPLER_BINARY" configure debug --json --configuration=./temp-config --no-read-env | jq -r ".[\"/\"].token")"
-[[ "$token" == "" ]] || error "ERROR: expected blank config value"
+value="$(DOPPLER_TOKEN=123 "$DOPPLER_BINARY" configure debug --json --configuration=./temp-config --no-read-env | jq -r ".[\"/\"].token")"
+echo "Value3: '$value'"
+[[ "$value" == "" ]] || error "ERROR: expected blank config value"
 
 afterAll
